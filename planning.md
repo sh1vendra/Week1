@@ -9,114 +9,89 @@
 
 ## Domain
 
-<!-- What domain did you choose? Why is this knowledge valuable and hard to find through official channels? -->
+Texas State University professor and course reviews collected from Rate My Professors. This knowledge is valuable because official university sources provide no information about actual exam difficulty, grading styles, or what study strategies work for specific professors. Students rely on peer knowledge to make informed course selection decisions.
 
 ---
 
 ## Documents
 
-<!-- List your specific sources: URLs, subreddit names, forum threads, or file descriptions.
-     Aim for at least 10 sources that together cover different subtopics or perspectives within your domain. -->
-
 | # | Source | Description | URL or location |
 |---|--------|-------------|-----------------|
-| 1 | | | |
-| 2 | | | |
-| 3 | | | |
-| 4 | | | |
-| 5 | | | |
-| 6 | | | |
-| 7 | | | |
-| 8 | | | |
-| 9 | | | |
-| 10 | | | |
+| 1 | prof_ted_lehr_computer_science.txt | CS professor reviews | ratemyprofessors.com |
+| 2 | prof_ziliang_zong_computer_science.txt | CS professor reviews | ratemyprofessors.com |
+| 3 | prof_ellen_couvillion_mathematics.txt | Math professor reviews | ratemyprofessors.com |
+| 4 | prof_john_burke_political_science.txt | Political Science reviews | ratemyprofessors.com |
+| 5 | prof_david_johnson_biology.txt | Biology professor reviews | ratemyprofessors.com |
+| 6 | prof_marla_burns_exercise_sport_health_ed.txt | Exercise Science reviews | ratemyprofessors.com |
+| 7 | prof_shuying_sun_mathematics.txt | Math professor reviews | ratemyprofessors.com |
+| 8 | prof_bobbie_moore_fashion_merchandising.txt | Fashion Merchandising reviews | ratemyprofessors.com |
+| 9 | prof_jackson_rebrovich_mathematics.txt | Math professor reviews | ratemyprofessors.com |
+| 10 | prof_edwin_vargas_computer_science.txt | CS professor reviews | ratemyprofessors.com |
 
 ---
 
 ## Chunking Strategy
 
-<!-- How will you split documents into chunks?
-     State your chunk size (in tokens or characters), overlap size, and explain why those
-     numbers fit the structure of your documents.
-     A review-heavy corpus warrants different chunking than a long FAQ. -->
+**Chunk size:** 300 characters
 
-**Chunk size:**
+**Overlap:** 50 characters
 
-**Overlap:**
-
-**Reasoning:**
+**Reasoning:** Reviews are short self-contained opinions, typically 2-4 sentences. 300 characters captures one complete review without merging unrelated opinions. Overlap of 50 characters prevents key information from being split across chunk boundaries. Chunks smaller than 100 characters lose the context that makes a review meaningful. Chunks larger than 600 characters merge multiple reviews and dilute retrieval precision.
 
 ---
 
 ## Retrieval Approach
 
-<!-- Which embedding model are you using (e.g., all-MiniLM-L6-v2 via sentence-transformers)?
-     How many chunks will you retrieve per query (top-k)?
-     If you were deploying this for real users and cost wasn't a constraint, what tradeoffs
-     would you weigh in choosing a different embedding model — context length, multilingual
-     support, accuracy on domain-specific text, latency? -->
+**Embedding model:** all-MiniLM-L6-v2 via sentence-transformers (local, no API key required)
 
-**Embedding model:**
+**Top-k:** 4
 
-**Top-k:**
-
-**Production tradeoff reflection:**
+**Production tradeoff reflection:** text-embedding-3-small (OpenAI) offers higher accuracy but costs money and adds API latency. multilingual-e5-base would be needed for multilingual student reviews. For a university with international students, multilingual support would matter significantly. Local model wins here for zero latency, no cost, and no rate limits during development.
 
 ---
 
 ## Evaluation Plan
 
-<!-- List your 5 test questions with their expected correct answers.
-     Questions should be specific enough that you can judge whether the system's response
-     is right or wrong. "What are good dining halls?" is too vague.
-     "What do students say about wait times at [dining hall name] during lunch?" is testable. -->
-
 | # | Question | Expected answer |
 |---|----------|-----------------|
-| 1 | | |
-| 2 | | |
-| 3 | | |
-| 4 | | |
-| 5 | | |
+| 1 | What do students say about Ted Lehr's teaching style? | Harsh, calls on students, grades based on favoritism, disrespects students |
+| 2 | Which math professor is best for students who struggle with math? | Ellen Couvillion, reviews say she makes math easy and understandable |
+| 3 | Is Edwin Vargas recommended for CS 1308? | No, reviews say class is not actually intro level, goes deep into AI |
+| 4 | What do students say about Ziliang Zong? | Specific details from his reviews about teaching style and courses |
+| 5 | Which professor has the best reviews overall at Texas State? | Ellen Couvillion or Marla Burns based on 5.0 ratings in documents |
 
 ---
 
 ## Anticipated Challenges
 
-<!-- What could go wrong? Name at least two specific risks with reasoning.
-     Consider: noisy or inconsistent documents, missing source attribution, off-topic
-     retrieval, chunks that split key information across boundaries. -->
+1. Professor nicknames or shortened names may not match full names in documents, causing retrieval misses on informal queries.
 
-1.
-
-2.
+2. Reviews from different semesters may contradict each other with no timestamp metadata to resolve which is more recent or relevant.
 
 ---
 
 ## Architecture
 
-<!-- Draw a diagram of your pipeline showing the five stages:
-     Document Ingestion → Chunking → Embedding + Vector Store → Retrieval → Generation
-     Label each stage with the tool or library you're using.
-     You can use ASCII art, a Mermaid diagram, or embed a sketch as an image.
-     You'll use this diagram as context when prompting AI tools to implement each stage. -->
+```
+Document Ingestion (.txt files in /documents)
+        ↓
+Chunking (300 char, 50 overlap) — ingest.py
+        ↓
+Embedding (all-MiniLM-L6-v2) + ChromaDB — retriever.py
+        ↓
+Retrieval (top-k=4)
+        ↓
+Groq LLM (llama-3.3-70b-versatile) — generator.py
+        ↓
+Gradio UI — app.py
+```
 
 ---
 
 ## AI Tool Plan
 
-<!-- For each part of the pipeline below, describe:
-     - Which AI tool you plan to use (Claude, Copilot, ChatGPT, etc.)
-     - What you'll give it as input (which sections of this planning.md, which requirements)
-     - What you expect it to produce
-     - How you'll verify the output matches your spec
+**Milestone 3 — Ingestion and chunking:** Used Claude Code, provided document structure and chunking strategy section, asked it to implement chunk_documents() with 300 char size and 50 char overlap. Verified by checking chunk count (72) and printing 5 sample chunks.
 
-     "I'll use AI to help me code" is not a plan.
-     "I'll give Claude my Chunking Strategy section and ask it to implement chunk_text()
-     with my specified chunk size and overlap" is a plan. -->
+**Milestone 4 — Embedding and retrieval:** Used Claude Code, provided retrieval approach section and architecture diagram, asked it to implement embed_and_store() and retrieve() using ChromaDB and all-MiniLM-L6-v2. Verified by running 3 test queries and checking distance scores.
 
-**Milestone 3 — Ingestion and chunking:**
-
-**Milestone 4 — Embedding and retrieval:**
-
-**Milestone 5 — Generation and interface:**
+**Milestone 5 — Generation and interface:** Used Claude Code, provided exact grounding prompt requirement and interface spec, asked it to implement generate() and Gradio UI. Verified grounding by testing off-topic refusal behavior.

@@ -69,11 +69,92 @@ Chunk 5 (source: prof_shuying_sun_mathematics.txt):
 
 ---
 
+## Retrieval Results
+
+Three sample queries run against the live ChromaDB collection. Distance scores are cosine distances — lower means more semantically similar.
+
+**Query 1: "What do students say about Ted Lehr's teaching style?"**
+
+| Rank | Distance | Source |
+|------|----------|--------|
+| 1 | 0.5375 | prof_ted_lehr_computer_science.txt |
+| 2 | 0.6145 | prof_ted_lehr_computer_science.txt |
+| 3 | 0.6478 | prof_ted_lehr_computer_science.txt |
+| 4 | 0.7608 | prof_ted_lehr_computer_science.txt |
+
+All 4 results returned from the correct file. Distances are above 0.5 because the reviews discuss classroom behavior and grading style rather than explicitly naming "teaching style," creating a small semantic gap. Retrieval is topically correct despite elevated scores.
+
+**Query 2: "Which math professor is easiest at Texas State?"**
+
+| Rank | Distance | Source |
+|------|----------|--------|
+| 1 | 0.7648 | prof_ellen_couvillion_mathematics.txt |
+| 2 | 0.8663 | prof_jackson_rebrovich_mathematics.txt |
+| 3 | 0.8979 | prof_jackson_rebrovich_mathematics.txt |
+| 4 | 0.9255 | prof_shuying_sun_mathematics.txt |
+
+All results from math professor files. Distances are higher because "easiest" is an indirect concept not used verbatim in reviews — students use "easy to understand," "understandable," and "manageable" instead. Top result from Couvillion is relevant; her reviews directly address students who are nervous about math.
+
+**Query 3: "What is Professor Zong like for CS courses?"**
+
+| Rank | Distance | Source |
+|------|----------|--------|
+| 1 | 0.4220 | prof_ziliang_zong_computer_science.txt |
+| 2 | 0.4785 | prof_ziliang_zong_computer_science.txt |
+| 3 | 0.7473 | prof_ziliang_zong_computer_science.txt |
+| 4 | 0.7625 | prof_ziliang_zong_computer_science.txt |
+
+Top two results score below 0.5, indicating strong semantic match. All results from the correct file. Direct name queries consistently produce the lowest distances because the professor's name appears verbatim in every chunk.
+
+---
+
 ## Grounded Generation
 
 **System prompt grounding instruction:** "Answer using only the review text provided below. If the answer is not contained in the provided reviews, say so explicitly. Do not draw on outside knowledge about professors or courses."
 
 **How source attribution is surfaced in the response:** Retrieved chunks are passed to the model as numbered context blocks each labeled with their source filename. The sources list in the response is built programmatically from the metadata of retrieved chunks, not left to the model to generate. Every response includes a Sources field listing the filenames used.
+
+---
+
+## Query Interface
+
+The system runs as a Gradio web app on `localhost:7860`. The interface has a single text input labeled "Your question," an Ask button, an Answer output box (8 lines), and a Sources output box (4 lines). Both pressing Enter in the input and clicking Ask trigger the same `handle_query` function, which calls `generate()` and formats the sources list as bullet points.
+
+**Sample interaction transcript:**
+
+> **Question:** What do students say about Ted Lehr?
+>
+> **Answer:** According to the reviews, students say that Ted Lehr constantly disrespects students and tells everyone to just use AI for everything. He grades based on how much he likes a student, has extremely boring lectures, and calls on students he thinks won't be able to answer. Students describe his communication style as harsh and discouraging, and note that he uses a mocking tone during class discussions. He is very strict about his own rules and has told students that failure to follow them will result in a failing grade.
+>
+> **Sources:**
+> • prof_ted_lehr_computer_science.txt
+
+---
+
+## Example Responses
+
+**Example 1 — In-scope question with clear answer:**
+
+> **Question:** Which math professor would you recommend for someone bad at math?
+>
+> **Answer:** Based on the reviews, Professor Ellen Couvillion is recommended for students who struggle with math. One review states: "I am bad at math but she made it easy. Her explaining of math is very understandable and clear." She is also described as a great math professor for students nervous about algebra, with lectures that are easy to follow, test reviews closely matching actual tests, and very helpful office hours.
+>
+> **Sources:**
+> • prof_ellen_couvillion_mathematics.txt
+> • prof_jackson_rebrovich_mathematics.txt
+
+**Example 2 — Out-of-scope question, explicit refusal:**
+
+> **Question:** What is the best restaurant in San Marcos?
+>
+> **Answer:** The answer is not contained in the provided reviews. The reviews mention Starbucks, but only as a place where Professor Shuying Sun treated her students, not as a recommendation for the best restaurant in San Marcos.
+>
+> **Sources:**
+> • prof_jackson_rebrovich_mathematics.txt
+> • prof_marla_burns_exercise_sport_health_ed.txt
+> • prof_shuying_sun_mathematics.txt
+
+The system refused to answer from general knowledge and explicitly stated the information was not in the reviews. The Starbucks mention is a correct observation from the retrieved chunks, not an invented fact.
 
 ---
 

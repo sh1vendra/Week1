@@ -1,0 +1,15 @@
+Professor: Shuying Sun | Course: MATH3305 | Rating: 5.0/5 | Difficulty: 2.0/5
+"She is the best Mathematics professor. She really cares a lot about you. Her HW are decent and she gives the exams from the Homework. Her attendance is mandatory but you will have fun time in class. She gave us treat in Starbucks and we had good conversations at the end of semester. She is always willing to help you."
+
+Professor: Shuying Sun | Course: MATH3305 | Rating: 5.0/5 | Difficulty: 1.0/5
+"Dr. Shuying Sun is one of the best professors I've taken in my experience of four semesters at Texas State. She genuinely cares about her students and puts extra efforts in class to make sure every student in the class are keeping up with her. She explains even small confusions without making you feel stupid. She is a sweet-heart. Best for the job!"
+
+Professor: Shuying Sun | Course: MATH4305 | Rating: 5.0/5 | Difficulty: 3.0/5
+"Dr. Sun is an incredible professor. Everything in Advanced Stats was accompanied with a sensible proof, as well as several examples. The homework was reasonable and provided plenty of practice, and gave you exactly the tools you needed to know. The course organization was great; each new topic built upon the last one. Highly recommend."
+
+Professor: Shuying Sun | Course: MATH3305 | Rating: 5.0/5 | Difficulty: 2.0/5
+"Professor Sun makes class topics and content straight forward and clear; everything students need can be found in the lecture. She provides plenty of examples; refreshing over and reviewing previously learned material at the beginning of each class is extremely helpful. She is very caring, genuine, patient, and thorough with her teaching."
+
+Professor: Shuying Sun | Course: MATH3305 | Rating: 4.0/5 | Difficulty: 3.0/5
+"Solid professor. Reasonable amount of homework, does excellent examples in class. Tests cover same material as homework."
+

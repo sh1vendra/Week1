@@ -1,0 +1,14 @@
+Professor: Ziliang Zong | Course: CS1428H | Rating: 5.0/5 | Difficulty: 4.0/5
+"Dr. Zong is a great teacher who truly wants his students to succeed. If you're taking CS I just for credit, he might not be the best fit. However, if you're eager to learn, he's perfect. His class is challenging, but his assignment, providing practical experience. He regularly checks in with students to ensure they understand everything."
+
+Professor: Ziliang Zong | Course: CS2308 | Rating: 2.0/5 | Difficulty: 3.0/5
+"This class was heavily focused on zybooks. Not much else is gone over in-depth in class. He can be hard to understand and usually assumes for a lot of the material that we should already know it. Nonetheless, if you do the assigned work its not too hard to pass the class."
+
+Professor: Ziliang Zong | Course: CS1428 | Rating: 1.0/5 | Difficulty: 1.0/5
+"The trashcan in the corner of the room deserved my money more than he did. At least the trashcan did something useful. Take someone else (like Seamen), good luck."
+
+Professor: Ziliang Zong | Course: CS1428 | Rating: 1.0/5 | Difficulty: 1.0/5
+"Its funny how aweful this professor is, not even laughable. In his own words "I care about my paycheck." He lacks all teaching skills. Does not care if you were in an car accident the day of a Test (you wont be able to retake it). Even if this professor if your LAST choice, wait till next semester for another professor.This guy only likes the money"
+
+Professor: Ziliang Zong | Course: CS2308 | Rating: 1.0/5 | Difficulty: 5.0/5
+"Terrible!"
